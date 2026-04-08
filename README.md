@@ -26,32 +26,91 @@ A production-ready Inventory Management System built for teams of ~100 people, f
 - MongoDB >= 6.0 (running locally or a cloud URI)
 - npm >= 9
 
-## Setup
+## Quick Start (Automated Setup)
 
-### 1. Clone the repository
+The easiest way to get started is using the setup script. It installs MongoDB, sets up dependencies, generates a JWT secret, and runs the tests:
+
+```bash
+git clone https://github.com/Sarthak05U/InventoryManagementSystem.git
+cd InventoryManagementSystem
+chmod +x setup.sh
+bash setup.sh
+```
+
+Then start the app:
+
+```bash
+# Terminal 1 - Backend
+cd server && npm run dev
+
+# Terminal 2 - Frontend
+cd client && npm run dev
+```
+
+## Manual Setup
+
+### 1. Install MongoDB
+
+#### Ubuntu / Debian
+
+```bash
+sudo apt-get update
+sudo apt-get install -y gnupg curl
+curl -fsSL https://www.mongodb.org/static/pgp/server-7.0.asc | sudo gpg --dearmor -o /usr/share/keyrings/mongodb-server-7.0.gpg
+echo "deb [ signed-by=/usr/share/keyrings/mongodb-server-7.0.gpg ] http://repo.mongodb.org/apt/ubuntu jammy/mongodb-org/7.0 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-7.0.list
+sudo apt-get update
+sudo apt-get install -y mongodb-org
+sudo systemctl start mongod
+sudo systemctl enable mongod
+```
+
+#### macOS (Homebrew)
+
+```bash
+brew tap mongodb/brew
+brew install mongodb-community@7.0
+brew services start mongodb-community@7.0
+```
+
+#### Windows
+
+Download and install from: https://www.mongodb.com/try/download/community
+
+After installing, start the MongoDB service from Services or run:
+```bash
+net start MongoDB
+```
+
+#### Verify MongoDB is running
+
+```bash
+mongosh --eval "db.runCommand({ ping: 1 })"
+```
+
+### 2. Clone the repository
 
 ```bash
 git clone https://github.com/Sarthak05U/InventoryManagementSystem.git
 cd InventoryManagementSystem
 ```
 
-### 2. Backend setup
+### 3. Backend setup
 
 ```bash
 cd server
 cp .env.example .env
-# Edit .env and set your MONGO_URI and JWT_SECRET
+# Edit .env and set your JWT_SECRET (MONGO_URI defaults to localhost)
 npm install
 ```
 
-### 3. Frontend setup
+### 4. Frontend setup
 
 ```bash
 cd client
 npm install
 ```
 
-### 4. Environment variables
+### 5. Environment variables
 
 Copy `.env.example` to `.env` in the **server** directory and configure:
 
@@ -148,6 +207,7 @@ InventoryManagementSystem/
 │   └── package.json
 ├── .env.example
 ├── .gitignore
+├── setup.sh            # Automated setup script
 └── README.md
 ```
 
